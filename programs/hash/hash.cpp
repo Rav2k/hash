@@ -173,10 +173,11 @@ void del(node** &Htable, int idDelete, int sizeT) {
 }
 
 void print(node** table, int Tsize) {
-
+  cout<<"here"<<endl;
   for (int i = 0; i < Tsize; i++) {
-    if (table[i] != NULL) {
+    if (table[i] != NULL) {//making sure there is stuff in there
       printloop(table[i], table[i], i);
+      cout<<"done"<<endl;
     }
     else {
       //don't do anything
@@ -185,21 +186,13 @@ void print(node** table, int Tsize) {
 }
 
 void printloop(node* cur, node* next, int inx) {//printing out
-  if (next == cur) {//if the nodes are the same
-    cout << "Students in row " << inx << ":" << endl;
-  }
   if (next != NULL) {
-    cout << endl;
-    next->stu->getName();
-    next->stu->getName2();
-    next->stu->getNumber();
-    next->stu->getGPA();
+    cout<<next->stu<<endl;
+    next->stu->getDescription();
+    cout<<"here"<<endl;
     printloop(cur, next->getNext(), inx);
   }
-  
 }
-
- 
 void reHashTable(node ** &hashTable, int tableSize) {
   node** reHash = new node*[tableSize];
   for (int i = 0; i < tableSize; i++) {
