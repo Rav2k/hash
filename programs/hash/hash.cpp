@@ -186,7 +186,7 @@ void print(node** table, int Tsize) {
 }
 
 void printloop(node* cur, node* next, int inx) {//printing out
-if (next == cur) {//if the two nodes are the same
+if (next == cur) {//where the student is in the table
    cout << "Students in row " << inx << ":" << endl;
  }  
 if (next != NULL) {
