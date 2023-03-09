@@ -37,7 +37,7 @@ int main(){
   cout<<"Generating random students..."<<endl;
   gene(20, firstArr, lastArr, hashTable);
   cout<<"done..."<<endl;
-  do{//do this until the user says quit
+   do{//do this until the user says quit
     cout<<"Type 'add' to add student;Type 'del' to delete;Type 'print' to print all students' info;Type 'quit' to quit"<<endl;
 
     cin.getline(userInput,10,'\n');//gets the user's request then clears the cin
@@ -73,7 +73,6 @@ int main(){
 
   return 0;
 }
-
 student* studentMaker(char *name, char *name2, int stuNum, float GPA, node ** & hashTable, int tableSize){
   char* test = new char[20];
   char* test2 = new char[20];
@@ -96,7 +95,6 @@ student* studentMaker(char *name, char *name2, int stuNum, float GPA, node ** & 
   }
   return student4;
 }
-
 void gene(int numberOfStudCreations, char** firstArr, char** lastArr, node** & table){
   for(int i = 0;i<numberOfStudCreations;i++){
     //generates random number
@@ -119,12 +117,12 @@ void add(node ** &Hashtable, student* newStu, int index) {
     node* current = Hashtable[index];
     while (!loop) {
       if (current->nextNode == NULL) {
-	current->nextNode = newNode;
-	newNode->nextNode = NULL;
-	loop = true;
+        current->nextNode = newNode;
+        newNode->nextNode = NULL;
+        loop = true;
       }
       else {
-	current = current->nextNode;
+        current = current->nextNode;
       }
     }
   }
@@ -140,7 +138,7 @@ void del(node** &Htable, int idDelete, int sizeT) {
   node * pre = cur2;
   int counter = 0;
   bool doneDeleting = false;
-  while (cur2 != NULL) {//while the current node is not empty 
+  while (cur2 != NULL) {//while the current node is not empty
      if (cur2->stu->number == idDelete && counter == 0){//looping throught the table and if the student's id is equal to the id that is to be deleted then...
       node * removeHead = cur2; //node pointer equals the current node so I can delete it later
       pre = cur2->nextNode;//moving the previous node up to replace the currnet node that will be deleted
@@ -162,14 +160,13 @@ void del(node** &Htable, int idDelete, int sizeT) {
     }
     counter++;
   }
-
   if (doneDeleting == true) {
     cout << "Student deleted" << endl;
   }
   else {
     cout << "No student matches the ID, try again..." << endl;
   }
-  
+
 }
 
 void print(node** table, int Tsize) {
@@ -184,12 +181,13 @@ void print(node** table, int Tsize) {
     }
   }
 }
-
 void printloop(node* cur, node* next, int inx) {//printing out
-if (next == cur) {//where the student is in the table
-   cout << "Students in row " << inx << ":" << endl;
- }  
-if (next != NULL) {
+  if (next == cur) {
+    cout << endl;
+    cout << "Student(s) in row " << inx << ":" << endl;
+  }
+
+  if (next != NULL) {
     cout<<next->stu<<endl;
     next->stu->getDescription();
     cout<<"here"<<endl;
@@ -206,9 +204,9 @@ void reHashTable(node ** &hashTable, int tableSize) {
     if (hashTable[i] != NULL) {
       node* newnode2 = hashTable[i];
       while (newnode2 != NULL) {
-	indexNum = newnode2->getStudent()->number % tableSize;
-	add(reHash, newnode2->getStudent(), indexNum);
-	newnode2 = newnode2->nextNode;
+        indexNum = newnode2->getStudent()->number % tableSize;
+        add(reHash, newnode2->getStudent(), indexNum);
+        newnode2 = newnode2->nextNode;
       }
     }
   }
