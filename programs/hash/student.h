@@ -1,6 +1,10 @@
+File Edit Options Buffers Tools C++ Help
 #ifndef STUDENT_H
 #define STUDENT_H
 #include <iostream>
+#include <iomanip>
+#include <cstring>
+
 using namespace std;
 
 class student{
@@ -9,6 +13,7 @@ class student{
   char *name2;
   int number;
   float GPA;
+  void getDescription();
   char* getName();
   char* getName2();
   void setNumber(int studentNum);
