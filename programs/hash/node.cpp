@@ -1,3 +1,4 @@
+File Edit Options Buffers Tools C++ Help
 #include <iostream>
 #include <cstring>
 
