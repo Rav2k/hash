@@ -122,28 +122,29 @@ void gene(int numberOfStudCreations, char** firstArr, char** lastArr, node** & t
 }
 
 void add(node** &Hashtable, student* newStu, int index) {
+
   bool loop = false;
   node* newNode = new node(newStu);
   cout<<"Hash number:"<<Hashtable[index]->number<<endl;
   cout<<"newNode: "<<newNode->number<<endl;
-  if (Hashtable[index] == NULL) {
-    Hashtable[index] = newNode;
-    cout<<"In if"<<endl;
+  if (Hashtable[index] != NULL) { // Add condition to check if Hashtable[index] is not NULL
+    newNode->setNext(Hashtable[index]); // Set the next pointer of new node to the current node at the index
   }
-  else{
-    cout<<"In else"<<endl;
-  newNode->nextNode = NULL;
-  node *temp = Hashtable[index];
-  while(loop){
-    if(temp->nextNode != NULL){
-    temp = temp->nextNode;
-    }else{
-      loop = true;
-      temp->nextNode = newNode;
+  Hashtable[index] = newNode;
+  
+  /*bool loop = false;
+  node* newNode = new node(newStu);
+  cout<<"Hash number:"<<Hashtable[index]->number<<endl;
+  cout<<"newNode: "<<newNode->number<<endl;
+  if (Hashtable[index] == NULL) { // Fix this condition
+    Hashtable[index] = newNode;
+  } else {
+    node* temp = Hashtable[index];
+    while (temp->getNext() != NULL) {
+      temp = temp->getNext();
     }
-    }
-   }
-
+    temp->setNext(newNode);
+  }*/
   
   //for(temp = Hashtable[index]; temp->nextNode !=NULL; temp = temp->nextNode);
   cout<<"DONE"<<endl; 
@@ -151,31 +152,29 @@ void add(node** &Hashtable, student* newStu, int index) {
   
 
 void del(node** &Htable, int idDelete, int sizeT) {
-  int i = idDelete % sizeT;
-  node * cur = Htable[i];
-  node * prev = NULL;
-  bool found = false;
-  while (cur != NULL) {//making sure there is something there
-    if (cur->stu->number == idDelete) {//if the number is equal
-      if (prev == NULL) {
-        Htable[i] = cur->nextNode;
-      } else {
-        prev->nextNode = cur->nextNode;//this makes it so that the prev of cur doesn't connect to cur therefore removing cur from the table then I del 
-      }
-      delete cur;
-      Htable[i] = NULL;
-      found = true;
-      break;
-    }
-    prev = cur;
-    cur = cur->nextNode;
+  int index = idDelete % sizeT;
+  node* current = Htable[index];
+  node* previous = NULL;
+
+  while (current != NULL && current->number != idDelete) {
+    previous = current;
+    current = current->getNext();
   }
 
-  if (found) {
-    cout << "Student deleted" << endl;
-  } else {
-    cout << "No student matches the ID, try again..." << endl;
+  if (current == NULL) {
+    cout << "Student not found" << endl;
+    return;
   }
+
+  if (previous == NULL) {
+    // If the node to be deleted is the first node
+    Htable[index] = current->getNext();
+  } else {
+    previous->setNext(current->getNext());
+  }
+
+  delete current;
+
 }
 
 void print(node** table, int Tsize) {
@@ -190,6 +189,7 @@ void print(node** table, int Tsize) {
     }
   }
 }
+
 void printloop(node* cur, node* next, int inx) {//printing out
   if (next == cur) {
     cout << endl;
@@ -204,23 +204,27 @@ void printloop(node* cur, node* next, int inx) {//printing out
   }
 }
 void reHashTable(node ** &hashTable, int tableSize) {
-  node** reHash = new node*[tableSize];
-  for (int i = 0; i < tableSize; i++) {
-    reHash[i] = NULL;
+
+    node** newHashTable = new node*[tableSize]; // Create a new hash table with the updated table size
+  for(int i = 0; i < tableSize; i++) {
+    newHashTable[i] = NULL; // Initialize all entries in the new hash table to NULL
   }
-  int indexNum = 0;
-  for (int i = 0; i < tableSize / 2; i++) {
-    if (hashTable[i] != NULL) {
-      node* newnode2 = hashTable[i];
-      while (newnode2 != NULL) {
-        indexNum = newnode2->getStudent()->number % tableSize;
-        add(reHash, newnode2->getStudent(), indexNum);
-        newnode2 = newnode2->nextNode;
-      }
+
+  // Rehash all existing nodes from the old hash table to the new hash table
+  for(int i = 0; i < Tablesize/2; i++) {
+    node* cur = hashTable[i];
+    while(cur != NULL) {
+      node* next = cur->getNext();
+      int newIndex = cur->number % tableSize; // Get the new index in the new hash table
+      cur->setNext(newHashTable[newIndex]); // Update the next pointer of the current node to point to the new index in the new hash table
+      newHashTable[newIndex] = cur; // Set the current node as the new head of the list at the new index in the new hash table
+      cur = next; // Move to the next node in the old hash table
     }
   }
-  delete [] hashTable;
-  hashTable = reHash;
+
+  // Delete the old hash table and update the hashTable pointer to point to the new hash table
+  delete[] hashTable;
+  hashTable = newHashTable;
 }
 
 bool collisions(node** &table, int size) {
