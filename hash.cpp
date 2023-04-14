@@ -9,8 +9,8 @@
 #include <cstdlib>
 
 using namespace std;
+
 void add(node** &Hashtable, student* newStu, int index);
-//void del(node** &Htable, int idDelete, int sizeT);
 void del(node** &Htable, int idDelete, int sizeT);
 void print(node** table, int Tsize);
 void printloop(node * cur, node* next, int inx);
@@ -22,6 +22,9 @@ node *head = NULL;
 int Tablesize = 100;
 int main(){
   node **hashTable = new node*[100];
+  for(int i = 0; i<100;i++){
+    hashTable[i] = NULL;
+  }
   char userInput[20];
   srand (time(NULL));
   ifstream inFile("Fnames.txt");
@@ -121,22 +124,31 @@ void gene(int numberOfStudCreations, char** firstArr, char** lastArr, node** & t
 void add(node** &Hashtable, student* newStu, int index) {
   bool loop = false;
   node* newNode = new node(newStu);
-  if (Hashtable[index] != NULL) {
+  cout<<"Hash number:"<<Hashtable[index]->number<<endl;
+  cout<<"newNode: "<<newNode->number<<endl;
+  if (Hashtable[index] == NULL) {
+    Hashtable[index] = newNode;
+    cout<<"In if"<<endl;
+  }
+  else{
+    cout<<"In else"<<endl;
   newNode->nextNode = NULL;
   node *temp = Hashtable[index];
   while(loop){
     if(temp->nextNode != NULL){
     temp = temp->nextNode;
     }else{
-      temp->nextNode = newNode;
       loop = true;
+      temp->nextNode = newNode;
     }
-  }
-  temp->nextNode = newNode;
-  }
-  cout<<"DONE"<<endl;
+    }
+   }
 
-}
+  
+  //for(temp = Hashtable[index]; temp->nextNode !=NULL; temp = temp->nextNode);
+  cout<<"DONE"<<endl; 
+  }
+  
 
 void del(node** &Htable, int idDelete, int sizeT) {
   int i = idDelete % sizeT;
